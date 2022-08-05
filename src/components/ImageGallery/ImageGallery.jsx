@@ -13,15 +13,15 @@ const Status = {
   SUCCSESS: 'succsess',
   FAIL: 'fail',
 };
-const INITIAL_STATE = {
-  //   showButton: true,
-  queryList: [],
-  //   status: Status.START,
-  //   showModal: false,
-  largeImage: null,
-  tags: null,
-  page: 1,
-};
+// const INITIAL_STATE = {
+//   //   showButton: true,
+//   queryList: [],
+//   //   status: Status.START,
+//   //   showModal: false,
+//   largeImage: null,
+//   tags: null,
+//   page: 1,
+// };
 
 class ImageGallery extends Component {
   state = {
