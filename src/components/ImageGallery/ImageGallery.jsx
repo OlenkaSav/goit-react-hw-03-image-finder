@@ -6,6 +6,7 @@ import Modal from 'components/Modal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from 'components/Button';
+// import { toast } from 'react-toastify';
 
 const Status = {
   START: 'start',
@@ -25,7 +26,6 @@ const Status = {
 
 class ImageGallery extends Component {
   state = {
-    query: '',
     page: 1,
     queryList: [],
     status: Status.START,
@@ -38,21 +38,47 @@ class ImageGallery extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevProps.query;
     const nextQuery = this.props.query;
-    // const prevPage = prevState.page;
+    const prevPage = prevState.page;
     const nextPage = this.state.page;
-    // console.log(prevProps.onOpenModal());
+    console.log(prevQuery, nextQuery);
 
     try {
       if (prevQuery !== nextQuery) {
-        this.setState({ status: Status.LOADING });
+        this.setState({
+          status: Status.LOADING,
+          page: 1,
+          queryList: [],
+          showBtn: false,
+        });
         const searchResult = await fetchImages(nextQuery, nextPage);
-        console.log(searchResult);
         if (searchResult.hits.length === 0) {
+          //   toast(`Sorry, there are no more images.`);
           this.setState({ status: Status.FAIL });
+        }
+        if (searchResult.hits.length !== 12) {
+          this.setState({
+            queryList: [...searchResult.hits],
+            status: Status.SUCCSESS,
+          });
         } else {
           this.setState({
-            queryList: [...prevState.queryList, ...searchResult.hits],
+            showBtn: true,
+            queryList: [...searchResult.hits],
             status: Status.SUCCSESS,
+          });
+        }
+      }
+      if (prevQuery === nextQuery && prevPage !== nextPage) {
+        const searchResult = await fetchImages(nextQuery, nextPage);
+        if (searchResult.hits.length !== 12) {
+          this.setState({
+            showBtn: false,
+            queryList: [...prevState.queryList, ...searchResult.hits],
+          });
+        }
+        if (searchResult.hits.length === 12) {
+          this.setState({
+            queryList: [...prevState.queryList, ...searchResult.hits],
           });
         }
       }
@@ -86,6 +112,7 @@ class ImageGallery extends Component {
     this.setState(prevState => ({
       page: prevState.page + 1,
     }));
+
     // console.log(prevState.page);
   };
 
@@ -95,7 +122,7 @@ class ImageGallery extends Component {
     // const openModal = this.props.onOpenModal;
 
     if (status === 'start') {
-      return <div>Введите</div>;
+      return <StyledNotification>Type something...</StyledNotification>;
     }
 
     if (status === 'loading') {
@@ -103,7 +130,7 @@ class ImageGallery extends Component {
     }
 
     if (status === 'fail') {
-      return <div>Нету</div>;
+      return <StyledNotification>There is nothing...</StyledNotification>;
     }
 
     if (status === 'succsess') {
@@ -151,152 +178,10 @@ const StyledImageGallery = styled.ul`
   margin-left: auto;
   margin-right: auto;
 `;
+const StyledNotification = styled.h2`
+  font-size: 40px;
+  text-align: center;
+  margin-top: 20px;
+`;
+
 export default ImageGallery;
-
-// import React, { Component } from 'react';
-// import fetchImages from 'services/fetchImages';
-// import Loader from 'components/Loader';
-// import ImageGalleryItem from './ImageGalleryItem';
-// import Modal from 'components/Modal';
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-
-// const Status = {
-//   START: 'start',
-//   LOADING: 'loading',
-//   SUCCSESS: 'succsess',
-//   FAIL: 'fail',
-// };
-// const INITIAL_STATE = {
-//   //   showButton: true,
-//   queryList: [],
-//   //   status: Status.START,
-//   //   showModal: false,
-//   largeImage: null,
-//   tags: null,
-//   page: 1,
-// };
-
-// class ImageGallery extends Component {
-//   state = {
-//     query: '',
-//     page: 1,
-//     queryList: [],
-//     status: Status.START,
-//     showModal: false,
-//     largeImage: null,
-//     tags: null,
-//   };
-
-//   async componentDidUpdate(prevProps, prevState) {
-//     const prevQuery = prevProps.query;
-//     const nextQuery = this.props.query;
-//     const prevPage = prevState.page;
-//     const nextPage = this.state.page;
-//     // console.log(prevProps.onOpenModal());
-
-//       try {
-//           if (prevQuery !== nextQuery || prevPage !== nextPage) {
-//               this.setState({ status: Status.LOADING });
-//               const searchResult = await fetchImages(nextQuery, nextPage);
-//               if (searchResult.hits.length === 0) {
-//                   this.setState({ status: Status.FAIL });
-//               } else {
-//                   //   prevProps.onOpenModal();
-//                   this.setState({
-//                       queryList: searchResult.hits,
-//                       status: Status.SUCCSESS,
-//                   });
-//               }
-//           }
-//           // console.log(searchResult.hits);
-//           // .fetchPokemon(nextName)
-//           // .then(pokemon => this.setState({ pokemon, status: Status.RESOLVED }))
-//           // .catch(error => this.setState({ error, status: Status.REJECTED }));
-//       } catch (error) {
-//           this.setState({ status: Status.FAIL });
-//       }
-//     }
-//   }
-// loadMore = () => {
-//     this.setState(prevState => ({ page: prevState.page + 1 }))
-// };
-
-//   toggleModal = () => {
-//     this.setState(({ showModal }) => ({
-//       showModal: !showModal,
-//     }));
-//     console.log('open modal');
-//   };
-
-//   openModal = (largeImageURL, tags) => {
-//     this.toggleModal();
-//     this.setState({ largeImage: largeImageURL, tags });
-//   };
-
-//   closeModal = () => {
-//     this.toggleModal();
-//     this.setState({ largeImage: null, tags: null });
-//   };
-
-// render() {
-//     const { status, queryList, showModal } = this.state;
-//     const { query } = this.props;
-//     // const openModal = this.props.onOpenModal;
-
-//     if (status === 'start') {
-//       return <div>Введите</div>;
-//     }
-
-//     if (status === 'loading') {
-//       return <Loader query={query} />;
-//     }
-
-//     if (status === 'fail') {
-//       return <div>Нету</div>;
-//     }
-
-//     if (status === 'succsess') {
-//       return (
-//         <>
-//           <StyledImageGallery>
-//             {queryList.map(({ id, webformatURL, largeImageURL, tags }) => (
-//               <ImageGalleryItem
-//                 key={id}
-//                 webformatURL={webformatURL}
-//                 largeImageURL={largeImageURL}
-//                 tags={tags}
-//                 onClick={this.openModal}
-//               />
-//             ))}
-//           </StyledImageGallery>
-//           {showModal && (
-//             <Modal
-//               onClose={this.closeModal}
-//               large={this.state.largeImage}
-//               tags={this.state.tags}
-//             />
-//           )}
-//         </>
-//       );
-//     }
-//   }
-
-// ImageGallery.propTypes = {
-//   queryList: PropTypes.arrayOf(PropTypes.shape({})),
-// };
-
-// // --------Styles-------
-// const StyledImageGallery = styled.ul`
-//   display: grid;
-//   max-width: calc(100vw - 48px);
-//   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-//   grid-gap: 16px;
-//   margin-top: 0;
-//   margin-bottom: 0;
-//   padding: 0;
-//   list-style: none;
-//   margin-left: auto;
-//   margin-right: auto;
-// `;
-// export default ImageGallery;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import styled from 'styled-components';
+import { ToastContainer } from 'react-toastify';
 
 class App extends Component {
   state = {
@@ -18,6 +19,7 @@ class App extends Component {
       <StyledApp>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery query={query} />
+        <ToastContainer position="top-center" theme="colored" />
       </StyledApp>
     );
   }
