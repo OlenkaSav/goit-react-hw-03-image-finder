@@ -30,6 +30,7 @@ class ImageGallery extends Component {
     queryList: [],
     status: Status.START,
     showModal: false,
+    showBtn: false,
     largeImage: null,
     tags: null,
   };
@@ -42,13 +43,13 @@ class ImageGallery extends Component {
     // console.log(prevProps.onOpenModal());
 
     try {
-      if (prevQuery !== nextQuery || prevPage !== nextPage) {
+      if (prevQuery !== nextQuery) {
         this.setState({ status: Status.LOADING });
         const searchResult = await fetchImages(nextQuery, nextPage);
+        console.log(searchResult);
         if (searchResult.hits.length === 0) {
           this.setState({ status: Status.FAIL });
         } else {
-          console.log(prevState);
           this.setState({
             queryList: [...prevState.queryList, ...searchResult.hits],
             status: Status.SUCCSESS,
@@ -89,7 +90,7 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { status, queryList, showModal } = this.state;
+    const { status, queryList, showModal, showBtn } = this.state;
     const { query } = this.props;
     // const openModal = this.props.onOpenModal;
 
@@ -119,7 +120,7 @@ class ImageGallery extends Component {
               />
             ))}
           </StyledImageGallery>
-          <Button loadMore={this.loadMore}>Load more</Button>
+          {showBtn && <Button loadMore={this.loadMore}>Load more</Button>}
           {showModal && (
             <Modal
               onClose={this.closeModal}
