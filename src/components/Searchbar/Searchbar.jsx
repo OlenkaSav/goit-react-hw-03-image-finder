@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
+import { toast } from 'react-toastify';
 // import icon from '../../icon/search.svg';
 
 class Searchbar extends Component {
@@ -15,7 +16,15 @@ class Searchbar extends Component {
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.query.trim() === '') {
-      alert('Введите.');
+      toast('Nothing to search', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
 

@@ -83,9 +83,6 @@ class ImageGallery extends Component {
         }
       }
       // console.log(searchResult.hits);
-      // .fetchPokemon(nextName)
-      // .then(pokemon => this.setState({ pokemon, status: Status.RESOLVED }))
-      // .catch(error => this.setState({ error, status: Status.REJECTED }));
     } catch (error) {
       this.setState({ status: Status.FAIL });
     }
