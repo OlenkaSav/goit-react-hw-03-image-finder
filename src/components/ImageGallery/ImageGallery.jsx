@@ -38,7 +38,7 @@ class ImageGallery extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevProps.query;
     const nextQuery = this.props.query;
-    const prevPage = prevState.page;
+    // const prevPage = prevState.page;
     const nextPage = this.state.page;
     // console.log(prevProps.onOpenModal());
 
