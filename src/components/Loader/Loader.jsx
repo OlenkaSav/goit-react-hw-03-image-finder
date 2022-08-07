@@ -26,12 +26,6 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const StyledNotification = styled.h2`
-  font-size: 40px;
-  text-align: center;
-  margin-top: 20px;
-`;
-
 Loader.propTypes = {
   query: PropTypes.string,
 };
