@@ -1,12 +1,17 @@
 import { Component } from 'react';
 import styled from 'styled-components';
 import { BsSearch } from 'react-icons/bs';
-import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+// import { toast } from 'react-toastify';
 // import icon from '../../icon/search.svg';
 
 class Searchbar extends Component {
   state = {
     query: '',
+  };
+
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
   };
 
   handleQueryChange = event => {
@@ -15,18 +20,10 @@ class Searchbar extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    if (this.state.query.trim() === '') {
-      toast('Nothing to search', {
-        position: 'top-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
+    // if (this.state.query.trim() === '') {
+    //   toast.warn('Nothing to search');
+    //   return;
+    // }
 
     this.props.onSubmit(this.state.query);
     this.setState({ query: '' });

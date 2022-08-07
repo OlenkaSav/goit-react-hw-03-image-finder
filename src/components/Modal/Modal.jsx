@@ -1,34 +1,35 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal-root');
 
 export default class Modal extends Component {
   componentDidMount() {
-    console.log('Modal componentDidMount');
+    // console.log('Modal componentDidMount');
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    console.log('Modal componentWillUnmount');
+    // console.log('Modal componentWillUnmount');
 
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      console.log('Нажали ESC, нужно закрыть модалку');
-
+      // console.log('Нажали ESC, нужно закрыть модалку');
+      console.log(this.props);
       this.props.onClose();
     }
   };
 
   handleBackdropClick = event => {
-    console.log('Кликнули в бекдроп');
+    // console.log('Кликнули в бекдроп');
 
-    console.log('currentTarget: ', event.currentTarget);
-    console.log('target: ', event.target);
+    // console.log('currentTarget: ', event.currentTarget);
+    // console.log('target: ', event.target);
 
     if (event.currentTarget === event.target) {
       this.props.onClose();
@@ -47,6 +48,12 @@ export default class Modal extends Component {
     );
   }
 }
+
+Modal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  tags: PropTypes.array,
+  large: PropTypes.string,
+};
 
 const Overlay = styled.div`
   position: fixed;

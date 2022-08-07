@@ -1,11 +1,11 @@
 import React from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 function Loader({ query }) {
   return (
     <Wrapper>
-      <StyledNotification>Search {query}</StyledNotification>;
       <TailSpin
         height="80"
         width="80"
@@ -32,4 +32,7 @@ const StyledNotification = styled.h2`
   margin-top: 20px;
 `;
 
+Loader.propTypes = {
+  query: PropTypes.string,
+};
 export default Loader;
